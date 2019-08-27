@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+
+<script type="text/ecmascript-6">
+    if(typeof axios!=='undefined'){
+        axios.defaults.baseURI='http://localhost:8086';
+        axios.defaults.withCredentials=true;//允许跨域请求
+        axios.defaults.transformRequest=data=>{
+            let str=``;
+            if(data&&typeof data==='object'){
+                for(let attr in data){
+                    if(data.hasOwnProperty(attr)){
+                        str+=`${attr}=${data[attr]}&`
+                    }
+                }
+            }
+            return str.substring(0,str.length-1);
+        }
+        axios.defaults.headers['Content-Type']='x-www-from-urlencoded';
+        axios.interceptors.response.use(result=>result.data);
+    }
+    axios.get('/getUser',{
+        params:{
+            //Get请求问号传参：设置到params中即可
+            userId:1
+        }
+    }).then(result=>{
+        console.log(result);
+    })
+
+</script>
+</body>
+</html>

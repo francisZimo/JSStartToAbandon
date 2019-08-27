@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+//    const puppeteer = require('puppeteer');
+    import puppeteer from 'node_modules/puppeteer'
+    (async () => {
+        const browser = await puppeteer.launch({
+        headless:false
+    });
+    const page = await browser.newPage();
+
+    await example1(page,browser); //后续例子替换这里就好了
+
+    await browser.close();
+    })();
+    async function example1(page,browser){
+        await page.goto('https://www.jd.com/',{
+            waitUntil:'load'
+        });
+
+        /**
+         * pdf功能需要设置launch的headless为true
+         */
+            // await page.pdf({
+            //     path: 'example1.pdf',
+            //     format: 'A4'
+            // });
+
+            //默认截屏可视区域 800*600
+        await page.screenshot({
+            path: 'example1-1.png'
+        });
+
+        /**
+         * setViewport重新定义可视区域 1420*1000
+         */
+        await page.setViewport({
+            width: 1420,
+            height: 1000
+        });
+        await page.screenshot({
+            path: 'example1-2.png'
+        });
+
+        //全屏截取
+        await page.screenshot({
+            path: 'example1-3.png',
+            fullPage: true
+        });
+    }
+
+</script>
+</body>
+</html>
